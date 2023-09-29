@@ -20,7 +20,41 @@
             padding: 20px 0;
         }
 
-        /* ... Rest of the existing styles ... */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #efefef;
+            padding: 10px;
+        }
+
+        nav li {
+            margin: 0 10px;
+        }
+
+        nav li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        nav li a:hover {
+            color: #0078d4;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        /* Additional style for the contact form */
+        #contact form {
+            margin-top: 20px;
+        }
 
         footer {
             background-color: #f3f3f3;
@@ -76,9 +110,20 @@
                         <div>
                             <p>Hello, I'm Melbin Paul, an IT student at Deakin University. I am passionate about creating visually stunning and user-friendly websites by leveraging my strong expertise in front-end development and a keen eye for design.</p>
                         </div>
+                        <div v-if="isStudent">
+                            <p>I'm a student.</p>
+                        </div>
+                        <div v-else>
+                            <p>I'm not a student.</p>
+                        </div>
                     </div>
                 </section>
-            `
+            `,
+            data() {
+                return {
+                    isStudent: true
+                };
+            }
         };
 
         const Portfolio = {
@@ -87,18 +132,28 @@
                     <div>
                         <h2>Portfolio</h2>
                         <div>
-                            <div class="project">
-                                <h3>Project 1: Task 1.1P - Creating an HTML Page Using CSS Styling and Integrating GitHub</h3>
-                                <p>This project entailed developing a visually appealing, user-friendly website with compelling storytelling, simple navigation, and excellent SEO to improve a fries shop's online presence and customer interaction.</p>
-                            </div>
-                            <div class="project">
-                                <h3>Project 2: Task 1.2P - Investigating Responsive Web Design and JavaScript Ideas</h3>
-                                <p>In this project, I used HTML and CSS to construct responsive web design, demonstrating its importance in online development. This method provides a consistent user experience, broadens audience reach, and is both cost-effective and future-proof.</p>
+                            <div class="project" v-for="project in projects" :key="project.title">
+                                <h3>{{ project.title }}</h3>
+                                <p>{{ project.description }}</p>
                             </div>
                         </div>
                     </div>
                 </section>
-            `
+            `,
+            data() {
+                return {
+                    projects: [
+                        {
+                            title: 'Project 1: Task 1.1P - Creating an HTML Page Using CSS Styling and Integrating GitHub',
+                            description: 'This project entailed developing a visually appealing, user-friendly website with compelling storytelling, simple navigation, and excellent SEO to improve a fries shop\'s online presence and customer interaction.'
+                        },
+                        {
+                            title: 'Project 2: Task 1.2P - Investigating Responsive Web Design and JavaScript Ideas',
+                            description: 'In this project, I used HTML and CSS to construct responsive web design, demonstrating its importance in online development. This method provides a consistent user experience, broadens audience reach, and is both cost-effective and future-proof.'
+                        }
+                    ]
+                };
+            }
         };
 
         const Skills = {
@@ -108,16 +163,23 @@
                         <h2>Skills</h2>
                         <div>
                             <ul>
-                                <li>Front-End Programming</li>
-                                <li>User Interface (UI) </li>
-                                <li>Responsive Web Design</li>
-                                <li>Frameworks for Web Development</li>
-                                <li>Problem-Solving</li>
+                                <li v-for="skill in skills" :key="skill">{{ skill }}</li>
                             </ul>
                         </div>
                     </div>
                 </section>
-            `
+            `,
+            data() {
+                return {
+                    skills: [
+                        'Front-End Programming',
+                        'User Interface (UI)',
+                        'Responsive Web Design',
+                        'Frameworks for Web Development',
+                        'Problem-Solving'
+                    ]
+                };
+            }
         };
 
         const Contact = {
@@ -125,13 +187,15 @@
                 return {
                     name: '',
                     email: '',
-                    message: ''
+                    message: '',
+                    isSubmitted: false
                 };
             },
             methods: {
                 handleFormSubmit() {
                     // Handle form submission logic here, e.g., sending data to a server
                     console.log('Form submitted!', this.name, this.email, this.message);
+                    this.isSubmitted = true;
                 }
             },
             template: `
@@ -153,8 +217,11 @@
                                     <label for="message">Message:</label>
                                     <textarea id="message" v-model="message" placeholder="Enter your message" required></textarea>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" v-if="!isSubmitted">Submit</button>
                             </form>
+                            <div v-if="isSubmitted">
+                                <p>Thank you for your message!</p>
+                            </div>
                             <ul>
                                 <li>Email: <a :href="'mailto:' + email">{{ email }}</a></li>
                             </ul>
