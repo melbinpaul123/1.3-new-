@@ -218,13 +218,13 @@
                                     <textarea id="message" v-model="message" placeholder="Enter your message" required></textarea>
                                 </div>
                                 <button type="submit" v-if="!isSubmitted">Submit</button>
+                                <div v-else>
+                                    <p>Thank you for your message!</p>
+                                    <ul>
+                                        <li>Email: <a :href="'mailto:' + email">{{ email }}</a></li>
+                                    </ul>
+                                </div>
                             </form>
-                            <div v-if="isSubmitted">
-                                <p>Thank you for your message!</p>
-                            </div>
-                            <ul>
-                                <li>Email: <a :href="'mailto:' + email">{{ email }}</a></li>
-                            </ul>
                         </div>
                     </div>
                 </section>
